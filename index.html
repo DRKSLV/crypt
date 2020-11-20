@@ -17,13 +17,19 @@
 </head>
 
 <body>
-    <h1>CEASAR Encryption</h1>
+    <h1 id="title">CEASAR Encryption</h1>
     <div class="body">
-        <textarea id="input" rows="6">
+        <textarea id="input" rows="6" autocomplete="off">
 Hallo dieser Text wird verschlüsselt
     </textarea>
+        <label> Algorithm
+            <select id="algorithm" autocomplete="off">
+                <option value="ceasar">CEASAR</option>
+                <option value="vigenere">VIGENERE</option>
+            </select>
+        </label>
         <label> Key:
-            <input id="key" type="number" />
+            <input id="key" type="number" autocomplete="off"/>
         </label>
         <div>
             <button id="encrypt">Encrypt</button>

@@ -4,17 +4,31 @@ const input=document.querySelector("#input");
 const key=document.querySelector("#key");
 const encrypt = document.querySelector("#encrypt");
 const decrypt = document.querySelector("#decrypt");
+const title = document.querySelector("#title");
+const algorithm = document.querySelector("#algorithm");
 
 const luni = new Lunicode();
 
 encrypt.addEventListener("click", (evt) => {
-    click((s) => verCaesar(parseInt(key.value) ||0, s, false));
+    click(false);
 });
 decrypt.addEventListener("click", (evt) => {
-    click((s) => verCaesar(parseInt(key.value) ||0, s, true));
+    click(true);
 });
 
-function click(func) {
+algorithm.addEventListener("change", (evt) => {
+    title.innerHTML = `${evt.target.value.toUpperCase()} Encryption`;
+    switch(evt.target.value) {
+        case "vigenere":
+            key.type="text"
+        break;
+        case "ceasar":
+            key.type="number"
+        break;
+    }
+});
+
+function click(reverse) {
     var string = input.value;
     input.classList.add("matrix");
     var iteration=0;
@@ -25,26 +39,31 @@ function click(func) {
     }, 100);
 
     setTimeout(() => {
-        input.value = func(string);
+        switch(algorithm.value) {
+            case "vigenere":
+                input.value= vigenere(key.value||"a", string, reverse);
+                break;
+            case "ceasar":
+                input.value= verCaesar(parseInt(key.value)||0, string, reverse);
+                break;
+            input.value= string;
+        }
         input.classList.remove("matrix");
         clearInterval(interval);
     }, 1000);
     
 }
 
-function viginere(key, string, reverse=false) {
+function vigenere(key, string, reverse=false) {
     return mapChars(string, (c, i)=> {
         while(i>=key.length)
             i-=key.length;
         var code = key.charCodeAt(i);
         var up = code>=65&&code<=90;
         var low = code>=97&&code<=122;
-        var n=0;
-
-        
+        var n=0;   
 
         if(up||low) {
-            console.log(code);
             code-= up?65:97;
             n=code;
         }
